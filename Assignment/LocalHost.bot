@@ -1,0 +1,18 @@
+{
+    "name": "LocalHost",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "",
+            "appPassword": "",
+            "endpoint": "http://localhost:3978/api/messages",
+            "id": "c2486be0-fd2a-11e8-805d-69f40cbc1ab5",
+            "name": "Local"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "path": "C:\\Users\\shahena.shaik\\Desktop\\GitHub\\Chatbot-Training\\LocalHost.bot",
+    "overrides": null
+}
