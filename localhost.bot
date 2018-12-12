@@ -1,0 +1,18 @@
+{
+    "name": "localhost",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "",
+            "appPassword": "",
+            "endpoint": "http://localhost:3978/api/messages",
+            "id": "a6626010-fdd0-11e8-a917-bf886858a101",
+            "name": "http://localhost:3978/api/messages"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "overrides": null,
+    "path": "C:\\Users\\shahena.shaik\\Desktop\\GitHub\\BOT\\localhost.bot"
+}

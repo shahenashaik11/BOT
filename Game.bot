@@ -1,0 +1,18 @@
+{
+    "name": "Game",
+    "description": "",
+    "services": [
+        {
+            "type": "endpoint",
+            "appId": "",
+            "appPassword": "",
+            "endpoint": "http://localhost:3978/api/messages",
+            "id": "a368d8b0-fddc-11e8-b1f7-973f6e1eeb55",
+            "name": "http://localhost:3978/api/messages"
+        }
+    ],
+    "padlock": "",
+    "version": "2.0",
+    "overrides": null,
+    "path": "C:\\Users\\shahena.shaik\\Desktop\\GitHub\\BOT\\Game.bot"
+}
