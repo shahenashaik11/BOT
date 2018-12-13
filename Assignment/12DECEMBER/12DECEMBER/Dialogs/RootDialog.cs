@@ -51,12 +51,7 @@ namespace _12DECEMBER.Dialogs
             }
             
            
-            //if (!(string.IsNullOrEmpty(userName)))
-            //{
-            //    await context.PostAsync($"{userName} lets Play a game  StonePaperScissors");
-            //    await context.PostAsync($"{userName} Please select one of these stone,paper,scissors ");
-            //}
-
+          
 
 
 
