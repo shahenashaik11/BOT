@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 
-namespace _13DecFood.Dialogs
+namespace FoodOrderingBot15dec.Dialogs
 {
     [Serializable]
     public class RootDialog : IDialog<object>
@@ -20,15 +20,12 @@ namespace _13DecFood.Dialogs
             return Task.CompletedTask;
         }
 
-        public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
-
             var activity = await result as Activity;
-
             this.DisplayName(context);
 
-
-            //context.Wait(MessageReceivedAsync);
+            
         }
         private void DisplayName(IDialogContext context)
         {
@@ -39,10 +36,10 @@ namespace _13DecFood.Dialogs
         {
             string Name = await result;
             await context.PostAsync(String.Format("Hi {0}.Welcome to NewFriends Food Ordering", Name));
-         
+
             this.ShowOptions(context);
         }
-        private void ShowOptions(IDialogContext context)
+        public void ShowOptions(IDialogContext context)
         {
             PromptDialog.Choice(context, this.OptionSelected, new List<string>() { VegOption, NonVegOption }, "What Would you like to have?", "Not a valid options", 3);
         }
@@ -87,15 +84,16 @@ namespace _13DecFood.Dialogs
             }
 
         }
-
-
-
         public async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
 
         {
 
-            context.Wait(this.MessageReceivedAsync);
 
+            context.Wait(this.MessageReceivedAsync);
         }
+       
+
+   
     }
+
 }

@@ -11,6 +11,7 @@ namespace _13DecFood.Dialogs
     [Serializable]
     public class AddressDialog : IDialog<object>
     {
+        
         public Task StartAsync(IDialogContext context)
         {
             context.Wait(MessageReceivedAsync);
@@ -31,6 +32,8 @@ namespace _13DecFood.Dialogs
         private void DisplayAddress(IDialogContext context)
         {
             PromptDialog.Text(context, this.EnterAddress, @"Enter Your Address");
+            
+
 
         }
         private async Task EnterAddress(IDialogContext context, IAwaitable<string> result)
@@ -38,10 +41,18 @@ namespace _13DecFood.Dialogs
             string address = await result;
 
             await context.PostAsync(String.Format("your order is placed\n THANKYOU"));
+            context.Call(new RootDialog(), this.ResumeAfterOptionDialog);
 
-            
+            // return Task.CompletedTask;
+
+
+
+
         }
 
-       
+        private  async Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            context.Wait(ResumeAfterOptionDialog);
+        }
     }
 }

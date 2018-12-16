@@ -39,10 +39,10 @@ namespace _13DecFood.Dialogs
         {
             string Name = await result;
             await context.PostAsync(String.Format("Hi {0}.Welcome to NewFriends Food Ordering", Name));
-         
+
             this.ShowOptions(context);
         }
-        private void ShowOptions(IDialogContext context)
+        public void ShowOptions(IDialogContext context)
         {
             PromptDialog.Choice(context, this.OptionSelected, new List<string>() { VegOption, NonVegOption }, "What Would you like to have?", "Not a valid options", 3);
         }
