@@ -8,7 +8,7 @@ namespace FoodOrderingBot15dec.Dialogs
     [Serializable]
     public class dish
     {
-        public string DishName { get; set; }
+        public string Name { get; set; }
         public float Price { get; set; }
     }
 }

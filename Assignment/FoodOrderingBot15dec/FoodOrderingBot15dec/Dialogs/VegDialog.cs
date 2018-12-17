@@ -15,10 +15,16 @@ namespace FoodOrderingBot15dec.Dialogs
     internal class VegDialog : IDialog<object>
     {
         AddressDialog add = new AddressDialog();
+        RootDialog root = new RootDialog();
         
+        private const string YesOption = "Yes";
+
+        private const string NoOption = "No";
+
         public static float Price;
-        
-        public  float quantity;
+        //public static float k;
+
+        public static float quantity;
         public static float n;
         public Task StartAsync(IDialogContext context)
         {
@@ -48,14 +54,24 @@ namespace FoodOrderingBot15dec.Dialogs
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<string> result)
         {
+            
             string choice = await result;
-           float number = 0.0f;
-            foreach (float s in choice)
+            //float k = choice.Length;
+            string number = String.Empty;
+            foreach (char str in choice)
+
             {
-                number += s;
-                
+
+                if (char.IsDigit(str))
+
+                    number += str.ToString();
+
+
+
             }
-            n = number;
+
+           
+             n = float.Parse(number);
             await context.PostAsync($"You've selected {await result}");
             await context.PostAsync($"Please enter the quantity in integer only");
             context.Wait(this.TotalCost);
@@ -68,15 +84,69 @@ namespace FoodOrderingBot15dec.Dialogs
             
             var qty = await result  as Activity;
             string qtys = qty.Text;
-            quantity = Convert.ToUInt32(qtys);
+            quantity=float.Parse(qtys.ToString());
+            //quantity = Convert.ToUInt32(qtys);
             Price = quantity * n;
+            RootDialog.finalprice += Price;
             await context.PostAsync($"Your total Bill is {Price}");
-            await context.PostAsync($"Enter Ok For Confirmation ");
+            //await context.PostAsync($"Enter Ok For Confirmation ");
+
             //context.Call(new AddressDialog(), this.ResumeAfterOptionDialog);
 
+            this.GoBack(context);
+            
+        }
+        public void GoBack(IDialogContext context)
+        {
+            PromptDialog.Choice(context, this.Redirect, new List<string>() { YesOption, NoOption }, "Do you want go back to the Menu?", "Not a valid options", 3);
+        }
+        private async Task Redirect(IDialogContext context, IAwaitable<string> result)
 
-            add.StartAsync(context);
+        {
+
+            try
+
+            {
+
+                string optionSelected = await result;
+
+                switch (optionSelected)
+
+                {
+
+                    case YesOption:
+
+                        //context.Call(new RootDialog(), this.ResumeAfterOptionDialog);
+                        root.ShowOptions(context);
+
+                        break;
+
+                    case NoOption:
+
+                        //context.Call(new RootDialog(), this.ResumeAfterOptionDialog);
+                        add.StartAsync(context);
+
+                        break;
+
+                }
+
+            }
+
+            catch (Exception e)
+
+            {
+
+                await context.PostAsync("Thanks");
+
+                this.MessageReceivedAsync(context, result);
+
+            }
+
         }
 
-          }
+        private Task ResumeAfterOptionDialog(IDialogContext context, IAwaitable<object> result)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

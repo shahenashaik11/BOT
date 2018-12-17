@@ -10,12 +10,13 @@ namespace FoodOrderingBot15dec.Dialogs
     [Serializable]
     public class AddressDialog
     {
-        //public static string YesOption = "Yes";
-        //public static string NoOption = "No";
+
+
+       // RootDialog root = new RootDialog();
         public Task StartAsync(IDialogContext context)
         {
             
-        context.Wait(MessageReceivedAsync);
+           context.Wait(MessageReceivedAsync);
 
             return Task.CompletedTask;
         }
@@ -23,15 +24,24 @@ namespace FoodOrderingBot15dec.Dialogs
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
         {
 
-           // var activity = await result;
-
+            // var activity = await result;
+            await context.PostAsync(String.Format($"final price is:{RootDialog.finalprice}"));
             this.DisplayAddress(context);
+            //this.FinalPrice(context);
 
 
             //context.Wait(MessageReceivedAsync);
         }
+        //private async Task FinalPrice(IDialogContext context)
+        //{
+        //    finalprice += this.Price;
+        //    await context.PostAsync(String.Format($"final price is:{finalprice}"));
+            
+
+        //}
         private void DisplayAddress(IDialogContext context)
         {
+            
             PromptDialog.Text(context, this.EnterAddress, @"Enter Your Address");
 
 
@@ -43,6 +53,7 @@ namespace FoodOrderingBot15dec.Dialogs
           
 
             await context.PostAsync(String.Format("your order is placed\n THANKYOU"));
+            
             context.Call(new RootDialog(), this.ResumeAfterOptionDialog);
 
             // return Task.CompletedTask;
