@@ -14,7 +14,8 @@ namespace FoodOrderingBot15dec.Dialogs
     [Serializable]
     internal class NonVegDialog : IDialog<object>
     {
-       // public static string QueryString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        AddressDialog add = new AddressDialog();
+        
         public static float Price;
         public float quantity;
         public static float n;
@@ -58,18 +59,19 @@ namespace FoodOrderingBot15dec.Dialogs
             n = number;
             await context.PostAsync($"You've selected {await result}");
             await context.PostAsync($"Please enter the quantity in integer only");
-            context.Wait(this.resume);
+            context.Wait(this.TotalCost);
 
         }
 
-        private async Task resume(IDialogContext context, IAwaitable<object> result)
+        private async Task TotalCost(IDialogContext context, IAwaitable<object> result)
         {
             var qty = await result as Activity;
             string qtys = qty.Text;
             quantity = Convert.ToUInt32(qtys);
             Price = quantity * n;
             await context.PostAsync($"Your total Bill is {Price}");
-
+            await context.PostAsync($"Enter Ok For Confirmation ");
+            add.StartAsync(context);
 
         }
     }

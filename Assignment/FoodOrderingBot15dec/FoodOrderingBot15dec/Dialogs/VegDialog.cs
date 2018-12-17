@@ -14,21 +14,22 @@ namespace FoodOrderingBot15dec.Dialogs
     [Serializable]
     internal class VegDialog : IDialog<object>
     {
-        //public static string Query= ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        AddressDialog add = new AddressDialog();
+        
         public static float Price;
         
         public  float quantity;
         public static float n;
         public Task StartAsync(IDialogContext context)
         {
-            string Query = "select * from FoodTable where CategoryID=1";
+            string Query = "select ProductName,Price from FoodTable where CategoryID=1";
             DataTable dt = new DataTable();
 
             List<string> dishes = new List<string>();
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            using (SqlConnection conn= new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
             {
-                connection.Open();
-                SqlDataAdapter adapter = new SqlDataAdapter(Query, connection);
+                conn.Open();
+                SqlDataAdapter adapter = new SqlDataAdapter(Query, conn);
                 adapter.Fill(dt);
                 foreach (DataRow dr in dt.Rows)
                 {
@@ -39,7 +40,7 @@ namespace FoodOrderingBot15dec.Dialogs
                    
                     dishes.Add(dish);
                 }
-                connection.Close();
+                conn.Close();
             }
             PromptDialog.Choice(context, MessageReceivedAsync, dishes, "Please choose one dish  from the Menu", "Invalid Menu type. Please try again");
             return Task.CompletedTask;
@@ -57,22 +58,25 @@ namespace FoodOrderingBot15dec.Dialogs
             n = number;
             await context.PostAsync($"You've selected {await result}");
             await context.PostAsync($"Please enter the quantity in integer only");
-           
             context.Wait(this.TotalCost);
+            
 
         }
 
         private async Task TotalCost(IDialogContext context, IAwaitable<object> result)
         {
-            //var activity = await result as Activity;
-            //string choice = activity.Text;
-            var qty = await result as Activity;
+            
+            var qty = await result  as Activity;
             string qtys = qty.Text;
             quantity = Convert.ToUInt32(qtys);
             Price = quantity * n;
             await context.PostAsync($"Your total Bill is {Price}");
-            
-           
+            await context.PostAsync($"Enter Ok For Confirmation ");
+            //context.Call(new AddressDialog(), this.ResumeAfterOptionDialog);
+
+
+            add.StartAsync(context);
         }
-    }
+
+          }
 }

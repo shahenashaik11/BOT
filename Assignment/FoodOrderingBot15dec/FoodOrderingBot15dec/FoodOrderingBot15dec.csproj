@@ -152,6 +152,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Dialogs\AddressDialog.cs" />
     <Compile Include="Dialogs\dish.cs" />
     <Compile Include="Dialogs\NonVegDialog.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
