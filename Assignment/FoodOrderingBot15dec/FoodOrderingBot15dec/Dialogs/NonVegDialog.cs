@@ -28,7 +28,7 @@ namespace FoodOrderingBot15dec.Dialogs
             string Query = "select * from FoodTable where CategoryID=2";
             DataTable dt = new DataTable();
 
-            List<string> dishes = new List<string>();
+           
             using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
             {
                 connection.Open();
@@ -41,18 +41,20 @@ namespace FoodOrderingBot15dec.Dialogs
                     Price = float.Parse(dr["Price"].ToString());
                     string dish= Name + " Cost: " + Price.ToString();
                     
-                    dishes.Add(dish);
+                    root.dishes.Add(dish);
                 }
                 connection.Close();
             }
-            PromptDialog.Choice(context, MessageReceivedAsync, dishes, "Please choose one dish from the Menu", "Invalid Menu type. Please try again");
+            PromptDialog.Choice(context, MessageReceivedAsync, root.dishes, "Please choose one dish from the Menu", "Invalid Menu type. Please try again");
             return Task.CompletedTask;
         }
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<string> result)
         {
             string choice = await result;
-           string number = String.Empty;
+            RootDialog.newdishes.Add(choice);
+          //  context.ConversationData.SetValue<List<string>>("dishesname", root.newdishes);
+            string number = String.Empty;
             foreach (char str in choice)
 
             {
@@ -88,7 +90,8 @@ namespace FoodOrderingBot15dec.Dialogs
             Price = quantity * n;
             RootDialog.finalprice += Price;
             await context.PostAsync($"Your total Bill is {Price}");
-           // await context.PostAsync($"Enter Ok For Confirmation ");
+            //context.ConversationData.SetValue<List<string>>("dishesname", root.dishes);
+            // await context.PostAsync($"Enter Ok For Confirmation ");
             this.GoBack(context);
 
         }

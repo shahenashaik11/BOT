@@ -10,9 +10,9 @@ namespace FoodOrderingBot15dec.Dialogs
     [Serializable]
     public class AddressDialog
     {
-
-
-       // RootDialog root = new RootDialog();
+        public  static string display = "";
+        RootDialog root = new RootDialog();
+        // RootDialog root = new RootDialog();
         public Task StartAsync(IDialogContext context)
         {
             
@@ -27,22 +27,14 @@ namespace FoodOrderingBot15dec.Dialogs
             // var activity = await result;
             await context.PostAsync(String.Format($"final price is:{RootDialog.finalprice}"));
             this.DisplayAddress(context);
-            //this.FinalPrice(context);
-
-
-            //context.Wait(MessageReceivedAsync);
+           
         }
-        //private async Task FinalPrice(IDialogContext context)
-        //{
-        //    finalprice += this.Price;
-        //    await context.PostAsync(String.Format($"final price is:{finalprice}"));
-            
-
-        //}
+       
         private void DisplayAddress(IDialogContext context)
         {
-            
+            context.ConversationData.SetValue<List<string>>("dishesname", RootDialog.newdishes);
             PromptDialog.Text(context, this.EnterAddress, @"Enter Your Address");
+            
 
 
 
@@ -50,13 +42,24 @@ namespace FoodOrderingBot15dec.Dialogs
         private async Task EnterAddress(IDialogContext context, IAwaitable<string> result)
         {
             string address = await result;
-          
+
+            context.ConversationData.TryGetValue<List<string>>("dishesname", out RootDialog.selecteddishes);
+            
+
+                for(int i=0;i< RootDialog.selecteddishes.Count; i++)
+                {
+                    context.PostAsync($"selected items are:\n {RootDialog.selecteddishes[i]} ");
+                }
+                   
+
+
+
 
             await context.PostAsync(String.Format("your order is placed\n THANKYOU"));
             
             context.Call(new RootDialog(), this.ResumeAfterOptionDialog);
 
-            // return Task.CompletedTask;
+            
 
 
 

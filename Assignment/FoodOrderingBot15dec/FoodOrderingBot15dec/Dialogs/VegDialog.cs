@@ -23,6 +23,7 @@ namespace FoodOrderingBot15dec.Dialogs
 
         public static float Price;
         //public static float k;
+       
 
         public static float quantity;
         public static float n;
@@ -31,7 +32,7 @@ namespace FoodOrderingBot15dec.Dialogs
             string Query = "select ProductName,Price from FoodTable where CategoryID=1";
             DataTable dt = new DataTable();
 
-            List<string> dishes = new List<string>();
+           
             using (SqlConnection conn= new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
             {
                 conn.Open();
@@ -43,12 +44,14 @@ namespace FoodOrderingBot15dec.Dialogs
                     string Name = dr["ProductName"].ToString();
                     Price = float.Parse(dr["Price"].ToString());
                     string dish = Name + " Cost: " + Price.ToString();
-                   
-                    dishes.Add(dish);
+                    root.dishes.Add(dish);
+
+                    
+
                 }
                 conn.Close();
             }
-            PromptDialog.Choice(context, MessageReceivedAsync, dishes, "Please choose one dish  from the Menu", "Invalid Menu type. Please try again");
+            PromptDialog.Choice(context, MessageReceivedAsync, root.dishes, "Please choose one dish  from the Menu", "Invalid Menu type. Please try again");
             return Task.CompletedTask;
         }
 
@@ -56,6 +59,9 @@ namespace FoodOrderingBot15dec.Dialogs
         {
             
             string choice = await result;
+            RootDialog.newdishes.Add(choice);
+
+          //  context.ConversationData.SetValue<List<string>>("dishesname", root.newdishes);
             //float k = choice.Length;
             string number = String.Empty;
             foreach (char str in choice)
@@ -65,6 +71,7 @@ namespace FoodOrderingBot15dec.Dialogs
                 if (char.IsDigit(str))
 
                     number += str.ToString();
+                
 
 
 
@@ -72,7 +79,9 @@ namespace FoodOrderingBot15dec.Dialogs
 
            
              n = float.Parse(number);
+            
             await context.PostAsync($"You've selected {await result}");
+            
             await context.PostAsync($"Please enter the quantity in integer only");
             context.Wait(this.TotalCost);
             
@@ -89,6 +98,7 @@ namespace FoodOrderingBot15dec.Dialogs
             Price = quantity * n;
             RootDialog.finalprice += Price;
             await context.PostAsync($"Your total Bill is {Price}");
+            //context.ConversationData.SetValue<List<string>>("dishesname", root.dishes);
             //await context.PostAsync($"Enter Ok For Confirmation ");
 
             //context.Call(new AddressDialog(), this.ResumeAfterOptionDialog);

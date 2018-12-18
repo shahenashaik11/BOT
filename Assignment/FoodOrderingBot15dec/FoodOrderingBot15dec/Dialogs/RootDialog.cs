@@ -12,6 +12,9 @@ namespace FoodOrderingBot15dec.Dialogs
         private const string VegOption = "Veg";
 
         private const string NonVegOption = "NonVeg";
+        public  List<string> dishes = new List<string>();
+        public static List<string> newdishes = new List<string>();
+        public static List<string> selecteddishes = new List<string>();
         public static float finalprice;
 
         public Task StartAsync(IDialogContext context)
@@ -23,8 +26,7 @@ namespace FoodOrderingBot15dec.Dialogs
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
-            //var activity = await result as Activity;
-            //this.DisplayName(context);
+          
             var message = await result;
             var userName = String.Empty;
             var IsNameAvailable = false;
@@ -54,18 +56,7 @@ namespace FoodOrderingBot15dec.Dialogs
 
             }
         }
-        //private void DisplayName(IDialogContext context)
-        //{
-        //    PromptDialog.Text(context, this.EnterName, @"what is your Name?");
-
-        //}
-        //private async Task EnterName(IDialogContext context, IAwaitable<string> result)
-        //{
-        //    string Name = await result;
-        //    await context.PostAsync(String.Format("Hi {0}.Welcome to NewFriends Food Ordering", Name));
-
-        //    this.ShowOptions(context);
-        //}
+    
         public void ShowOptions(IDialogContext context)
         {
             PromptDialog.Choice(context, this.OptionSelected, new List<string>() { VegOption, NonVegOption }, "What Would you like to have?", "Not a valid options", 3);
