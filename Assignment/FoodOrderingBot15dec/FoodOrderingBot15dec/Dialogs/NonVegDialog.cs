@@ -23,6 +23,7 @@ namespace FoodOrderingBot15dec.Dialogs
         public static float Price;
         public float quantity;
         public static float n;
+        public static string Name = String.Empty;
         public Task StartAsync(IDialogContext context)
         {
             string Query = "select * from FoodTable where CategoryID=2";
@@ -90,11 +91,29 @@ namespace FoodOrderingBot15dec.Dialogs
             Price = quantity * n;
             RootDialog.finalprice += Price;
             await context.PostAsync($"Your total Bill is {Price}");
-            //context.ConversationData.SetValue<List<string>>("dishesname", root.dishes);
-            // await context.PostAsync($"Enter Ok For Confirmation ");
+          
+            //using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString))
+            //{
+            //    string query = "INSERT INTO OrderDetails VALUES(@OrderID,@ProductName,@Quantity, @Price)";
+            //    SqlCommand cmd = new SqlCommand(query);
+
+            //    cmd.Parameters.AddWithValue("@OrderID", RootDialog.OrderID);
+            //    cmd.Parameters.AddWithValue("@Quantity", quantity);
+            //    cmd.Parameters.AddWithValue("@Price", Price);
+            //    cmd.Parameters.AddWithValue("@ProductName", Name);
+
+            //    cmd.Connection = con;
+            //    con.Open();
+            //    cmd.ExecuteNonQuery();
+            //    con.Close();
+
+            //}
             this.GoBack(context);
 
         }
+      
+
+    
         public void GoBack(IDialogContext context)
         {
             PromptDialog.Choice(context, this.Redirect, new List<string>() { YesOption, NoOption }, "Do you want go back to the Menu?", "Not a valid options", 3);

@@ -16,6 +16,8 @@ namespace FoodOrderingBot15dec.Dialogs
         public static List<string> newdishes = new List<string>();
         public static List<string> selecteddishes = new List<string>();
         public static float finalprice;
+       
+
 
         public Task StartAsync(IDialogContext context)
         {

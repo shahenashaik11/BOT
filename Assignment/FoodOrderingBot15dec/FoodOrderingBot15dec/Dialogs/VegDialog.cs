@@ -21,11 +21,11 @@ namespace FoodOrderingBot15dec.Dialogs
 
         private const string NoOption = "No";
 
-        public static float Price;
+        public static float Price, quantity;
         //public static float k;
        
 
-        public static float quantity;
+        
         public static float n;
         public Task StartAsync(IDialogContext context)
         {
@@ -41,7 +41,7 @@ namespace FoodOrderingBot15dec.Dialogs
                 foreach (DataRow dr in dt.Rows)
                 {
 
-                    string Name = dr["ProductName"].ToString();
+                   string Name = dr["ProductName"].ToString();
                     Price = float.Parse(dr["Price"].ToString());
                     string dish = Name + " Cost: " + Price.ToString();
                     root.dishes.Add(dish);
@@ -54,14 +54,19 @@ namespace FoodOrderingBot15dec.Dialogs
             PromptDialog.Choice(context, MessageReceivedAsync, root.dishes, "Please choose one dish  from the Menu", "Invalid Menu type. Please try again");
             return Task.CompletedTask;
         }
+        
 
         private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<string> result)
         {
             
             string choice = await result;
             RootDialog.newdishes.Add(choice);
+               
 
-          //  context.ConversationData.SetValue<List<string>>("dishesname", root.newdishes);
+
+
+            
+            //  context.ConversationData.SetValue<List<string>>("dishesname", root.newdishes);
             //float k = choice.Length;
             string number = String.Empty;
             foreach (char str in choice)

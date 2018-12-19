@@ -1,6 +1,8 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -12,6 +14,7 @@ namespace FoodOrderingBot15dec.Dialogs
     {
         public  static string display = "";
         RootDialog root = new RootDialog();
+        //VegDialog vegy = new VegDialog();
         // RootDialog root = new RootDialog();
         public Task StartAsync(IDialogContext context)
         {
@@ -25,7 +28,7 @@ namespace FoodOrderingBot15dec.Dialogs
         {
 
             // var activity = await result;
-            await context.PostAsync(String.Format($"final price is:{RootDialog.finalprice}"));
+             await context.PostAsync(String.Format($"final price is:{RootDialog.finalprice}"));
             this.DisplayAddress(context);
            
         }
@@ -56,7 +59,23 @@ namespace FoodOrderingBot15dec.Dialogs
 
 
             await context.PostAsync(String.Format("your order is placed\n THANKYOU"));
-            
+            //using (SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["defaultconnection"].ConnectionString))
+            //{
+            //    string query = "insert into OrderDetails values(@OrderID,@ProductName,@Quantity, @Price)";
+            //    SqlCommand cmd = new SqlCommand(query);
+
+            //    cmd.Parameters.AddWithValue("@OrderID", RootDialog.OrderID);
+            //    cmd.Parameters.AddWithValue("@Quantity", RootDialog.quantity);
+            //    cmd.Parameters.AddWithValue("@Price",   RootDialog.Price);
+            //    cmd.Parameters.AddWithValue("@ProductName", RootDialog.Name);
+
+            //    cmd.Connection = con;
+            //    con.Open();
+            //    cmd.ExecuteNonQuery();
+            //    con.Close();
+
+            //}
+
             context.Call(new RootDialog(), this.ResumeAfterOptionDialog);
 
             
