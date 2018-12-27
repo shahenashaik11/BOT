@@ -1,11 +1,13 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -89,7 +91,7 @@ namespace FoodOrderingBot15dec.Dialogs
             
             await context.PostAsync($"Please enter the quantity in integer only");
             context.Wait(this.TotalCost);
-            
+
 
         }
 
@@ -156,6 +158,11 @@ namespace FoodOrderingBot15dec.Dialogs
                 this.MessageReceivedAsync(context, result);
 
             }
+
+        }
+     
+
+            //return itemName;
 
         }
 
