@@ -26,7 +26,7 @@ namespace FoodOrderingBotLUIS.Dialogs
         {
 
             // var activity = await result;
-            await context.PostAsync(String.Format($"final price is:{RootDialog.finalprice}"));
+           // await context.PostAsync(String.Format($"final price is:{RootDialog.finalprice}"));
             await context.PostAsync(String.Format($"final price is:{LUIS.TotalAmount}"));
             this.DisplayAddress(context);
 

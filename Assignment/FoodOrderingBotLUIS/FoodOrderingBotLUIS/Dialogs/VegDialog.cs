@@ -135,6 +135,7 @@ namespace FoodOrderingBotLUIS.Dialogs
                            // PromptDialog.Choice(context, CheckOut, new List<string>() { "Confirm Order", "Continue Ordering", "Remove from Cart" }, "Any thing else?", "Invalid input. Please try again");
                         }
                         LUIS.InsertIntoCart(Data,context);
+                        this.GoBack(context);
                     }
                     else
 
@@ -151,7 +152,7 @@ namespace FoodOrderingBotLUIS.Dialogs
                     context.PostAsync("VegException");
 
                 }
-                this.GoBack(context);
+                
                 // await this.Vegy(context, choice);
             }
 
@@ -207,7 +208,7 @@ namespace FoodOrderingBotLUIS.Dialogs
 
             //}
 
-            public void GoBack(IDialogContext context)
+            public  void GoBack(IDialogContext context)
             {
                 PromptDialog.Choice(context, this.Redirect, new List<string>() { YesOption, NoOption }, "Do you want go back to the Menu?", "Not a valid options", 3);
             }

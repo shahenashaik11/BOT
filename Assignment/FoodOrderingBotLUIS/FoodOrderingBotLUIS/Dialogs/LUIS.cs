@@ -11,10 +11,12 @@ namespace FoodOrderingBotLUIS.Dialogs
 {
 
     [Serializable]
-    public class LUIS 
+    public class LUIS  
     {
         public static float TotalAmount;
         public static List<Cart> CartList = new List<Cart>();
+         VegDialog veg = new VegDialog();
+
         public   static void InsertIntoCart(LuisResponse Data,IDialogContext context)
         {
             
@@ -63,6 +65,8 @@ namespace FoodOrderingBotLUIS.Dialogs
 
                 //Modify(context);
                 context.PostAsync($"Your Total Cost till now is : {TotalAmount}");
+                
+
             }
             
             catch (Exception e)
