@@ -13,18 +13,20 @@ namespace LLC_ChatBot.Dialogs
         RootDialog root = new RootDialog();
         public Task StartAsync(IDialogContext context)
         {
-            context.PostAsync("Please enter your name, email id");
-            context.Wait(MessageReceivedAsync);
+            context.PostAsync("Please enter your name");
+            root.StartAsync(context);
+            //context.PostAsync("Please enter your name, email id");
+            //context.Wait(MessageReceivedAsync);
             
 
 
             return Task.CompletedTask;
         }
-        public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
-        {
-            root.EnterEmail(context, result);
+        //public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
+        //{
+        //    root.EnterEmail(context, result);
 
-        }
+        //}
 
     }
 }

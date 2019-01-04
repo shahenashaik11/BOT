@@ -59,10 +59,11 @@ namespace LLC_ChatBot.Dialogs
             catch (Exception e)
 
             {
+                SQLManager.StoreExceptionData(e.GetType().ToString(), e.Message, e.StackTrace, e.Data.ToString());
 
-                await context.PostAsync("enter a valid option");
+                //await context.PostAsync("enter a valid option");
 
-             
+
 
             }
 

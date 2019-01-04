@@ -42,7 +42,7 @@ namespace LLC_ChatBot.Dialogs
                 LuisResponse Data = new LuisResponse();
                 try
                 {
-                    var responseInString = await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/41a6a9ad-77ae-474c-9cc7-f2ae5205c1ca?staging=true&verbose=true&timezoneOffset=-360&subscription-key=c17a9179a96c42a5b6ed8ce59d66edd2&q="
+                    var responseInString = await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/daac86e9-b94a-4897-9f5e-3dea98dc3cde?staging=true&verbose=true&timezoneOffset=-360&subscription-key=60c884e98ad84389b452b71ed84894b4&q="
                     + System.Uri.EscapeDataString(UserID));
 
                     Data = JsonConvert.DeserializeObject<LuisResponse>(responseInString);
@@ -84,7 +84,8 @@ namespace LLC_ChatBot.Dialogs
                 }
                 catch (Exception e)
                 {
-                    await context.PostAsync("Name Exception");
+                    SQLManager.StoreExceptionData(e.GetType().ToString(), e.Message, e.StackTrace, e.Data.ToString());
+                    //await context.PostAsync("Name Exception");
                 }
             }
         }
@@ -101,7 +102,7 @@ namespace LLC_ChatBot.Dialogs
                 LuisResponse Data = new LuisResponse();
                 try
                 {
-                    var responseInString = await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/41a6a9ad-77ae-474c-9cc7-f2ae5205c1ca?staging=true&verbose=true&timezoneOffset=-360&subscription-key=c17a9179a96c42a5b6ed8ce59d66edd2&q="
+                    var responseInString = await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/daac86e9-b94a-4897-9f5e-3dea98dc3cde?staging=true&verbose=true&timezoneOffset=-360&subscription-key=60c884e98ad84389b452b71ed84894b4&q="
 
 
                     + System.Uri.EscapeDataString(choice));
@@ -184,7 +185,8 @@ namespace LLC_ChatBot.Dialogs
                 }
                 catch (Exception e)
                 {
-                    await context.PostAsync("StaticException");
+                    SQLManager.StoreExceptionData(e.GetType().ToString(), e.Message, e.StackTrace, e.Data.ToString());
+                    //await context.PostAsync("StaticException");
                 }
 
             }
@@ -202,7 +204,7 @@ namespace LLC_ChatBot.Dialogs
                 LuisResponse Data = new LuisResponse();
                 try
                 {
-                    var responseInString =  await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/41a6a9ad-77ae-474c-9cc7-f2ae5205c1ca?staging=true&verbose=true&timezoneOffset=-360&subscription-key=c17a9179a96c42a5b6ed8ce59d66edd2&q="
+                    var responseInString =  await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/daac86e9-b94a-4897-9f5e-3dea98dc3cde?staging=true&verbose=true&timezoneOffset=-360&subscription-key=60c884e98ad84389b452b71ed84894b4&q="
                     + System.Uri.EscapeDataString(choice2));
 
                     Data = JsonConvert.DeserializeObject<LuisResponse>(responseInString);
@@ -257,7 +259,8 @@ namespace LLC_ChatBot.Dialogs
                 
                 catch (Exception e)
                 {
-                    throw e;
+                    SQLManager.StoreExceptionData(e.GetType().ToString(), e.Message, e.StackTrace, e.Data.ToString());
+                    //throw e;
                     //await context.PostAsync("Dynamic Exception");
                 }
             }

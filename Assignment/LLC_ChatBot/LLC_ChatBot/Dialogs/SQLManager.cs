@@ -10,7 +10,7 @@ namespace LLC_ChatBot.Dialogs
 {
     public class SQLManager
     {
-       // public static string VisitorID;
+        // public static string VisitorID;
 
         public static string ConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         public static string GetName(string UserID)
@@ -315,7 +315,7 @@ namespace LLC_ChatBot.Dialogs
             return Response;
         }
 
-        public static void GetConversationData(string UserID,string UserResponse, string BotResponse)
+        public static void GetConversationData(string UserID, string UserResponse, string BotResponse)
         {
             string Response;
             using (SqlConnection connection = new SqlConnection(ConnectionString))
@@ -331,7 +331,7 @@ namespace LLC_ChatBot.Dialogs
                 command.ExecuteNonQuery();
             }
         }
-        public static string InsertVisitorData(string UserID,string ContactName,List<string> VisitorName,List<string> CompanyName,bool NeedParking,int NoOfParkingTicket,string BuildingName,string StartDate,string EndDate,string Comment)
+        public static string InsertVisitorData(string UserID, string ContactName, List<string> VisitorName, List<string> CompanyName, bool NeedParking, int NoOfParkingTicket, string BuildingName, string StartDate, string EndDate, string Comment)
         {
             try
             {
@@ -364,16 +364,41 @@ namespace LLC_ChatBot.Dialogs
 
                         command.ExecuteNonQuery();
 
-                        
+
                         VisitorData.VisitorID += command.Parameters["@VisitorID"].Value.ToString() + ",";
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw e;
             }
             return VisitorData.VisitorID;
+        }
+
+        public static void StoreExceptionData(string GetType,string Message,string StackTrace,string Data)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(ConnectionString))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand("ExceptionData", connection);
+
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@GetType", GetType);
+                    command.Parameters.AddWithValue("@Message", Message);
+                    command.Parameters.AddWithValue("@StackTrace",StackTrace);
+                    command.Parameters.AddWithValue("@Data", Data);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //SQLManager.StoreExceptionData(ex);
+            }
         }
     }
 }

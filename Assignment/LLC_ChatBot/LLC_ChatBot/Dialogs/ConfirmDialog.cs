@@ -55,7 +55,7 @@ namespace LLC_ChatBot.Dialogs
 
                     LuisResponse Data = new LuisResponse();
 
-                    var responseInString = await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/41a6a9ad-77ae-474c-9cc7-f2ae5205c1ca?staging=true&verbose=true&timezoneOffset=-360&subscription-key=c17a9179a96c42a5b6ed8ce59d66edd2&q="
+                    var responseInString = await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/daac86e9-b94a-4897-9f5e-3dea98dc3cde?staging=true&verbose=true&timezoneOffset=-360&subscription-key=60c884e98ad84389b452b71ed84894b4&q="
 
                     + System.Uri.EscapeDataString(departmentchoice));
 
@@ -120,8 +120,8 @@ namespace LLC_ChatBot.Dialogs
             catch (Exception e)
 
             {
-
-                throw e;
+                SQLManager.StoreExceptionData(e.GetType().ToString(), e.Message, e.StackTrace, e.Data.ToString());
+                //throw e;
 
             }
 
@@ -138,7 +138,7 @@ namespace LLC_ChatBot.Dialogs
 
                     LuisResponse Data = new LuisResponse();
 
-                    var responseInString = await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/41a6a9ad-77ae-474c-9cc7-f2ae5205c1ca?staging=true&verbose=true&timezoneOffset=-360&subscription-key=c17a9179a96c42a5b6ed8ce59d66edd2&q="
+                    var responseInString = await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/daac86e9-b94a-4897-9f5e-3dea98dc3cde?staging=true&verbose=true&timezoneOffset=-360&subscription-key=60c884e98ad84389b452b71ed84894b4&q="
 
                     + System.Uri.EscapeDataString(contactname));
 
@@ -182,8 +182,8 @@ namespace LLC_ChatBot.Dialogs
 
             catch (Exception e)
             {
-
-                throw e;
+                SQLManager.StoreExceptionData(e.GetType().ToString(), e.Message, e.StackTrace, e.Data.ToString());
+                //throw e;
 
             }
 
@@ -394,6 +394,7 @@ namespace LLC_ChatBot.Dialogs
                     case NoOption:
                         VisitorData.NeedParking = false;
                         RootDialog.UserResponse = VisitorData.NeedParking.ToString();
+                        this.SelectBuilding(context, result);
                         //context.Call(new RejectDialog(), this.ResumeAfterOptionDialog);
 
                         break;
@@ -405,8 +406,8 @@ namespace LLC_ChatBot.Dialogs
             catch (Exception e)
 
             {
-
-                await context.PostAsync("enter a valid option");
+                SQLManager.StoreExceptionData(e.GetType().ToString(), e.Message, e.StackTrace, e.Data.ToString());
+                //await context.PostAsync("enter a valid option");
 
 
 
@@ -429,7 +430,8 @@ namespace LLC_ChatBot.Dialogs
             }
             catch (Exception e)
             {
-                throw e;
+                SQLManager.StoreExceptionData(e.GetType().ToString(), e.Message, e.StackTrace, e.Data.ToString());
+                //throw e;
             }
 
         }
@@ -468,7 +470,7 @@ namespace LLC_ChatBot.Dialogs
 
                     LuisResponse Data = new LuisResponse();
 
-                    var responseInString = await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/41a6a9ad-77ae-474c-9cc7-f2ae5205c1ca?staging=true&verbose=true&timezoneOffset=-360&subscription-key=c17a9179a96c42a5b6ed8ce59d66edd2&q="
+                    var responseInString = await httpClient.GetStringAsync(@"https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/daac86e9-b94a-4897-9f5e-3dea98dc3cde?staging=true&verbose=true&timezoneOffset=-360&subscription-key=60c884e98ad84389b452b71ed84894b4&q="
 
                     + System.Uri.EscapeDataString(VisitorName));
 
@@ -508,8 +510,8 @@ namespace LLC_ChatBot.Dialogs
             }
             catch (Exception e)
             {
-
-                throw e;
+                SQLManager.StoreExceptionData(e.GetType().ToString(), e.Message, e.StackTrace, e.Data.ToString());
+                //throw e;
 
             }
 
@@ -585,8 +587,8 @@ namespace LLC_ChatBot.Dialogs
             catch (Exception e)
 
             {
-
-                await context.PostAsync("enter a valid option");
+                SQLManager.StoreExceptionData(e.GetType().ToString(), e.Message, e.StackTrace, e.Data.ToString());
+                // await context.PostAsync("enter a valid option");
 
 
 
@@ -599,31 +601,40 @@ namespace LLC_ChatBot.Dialogs
             string Comments = activity.Text;
             RootDialog.UserResponse = Comments;
             VisitorData.Comment = Comments;
+            VisitorID = SQLManager.InsertVisitorData(UserData.UserID, VisitorData.ContactName, VisitorData.VisitorName, VisitorData.CompanyName, VisitorData.NeedParking, VisitorData.NoOfParkingTicket, VisitorData.BuildingName, VisitorData.StartDate, VisitorData.EndDate, VisitorData.Comment);
             RootDialog.BotResponse = SQLManager.GetVisitorBadgeQuestions(23);
+            RootDialog.BotResponse = RootDialog.BotResponse.Replace("<ref. number>", VisitorID);
             await context.PostAsync(RootDialog.BotResponse);
             SQLManager.GetConversationData(UserData.UserID, RootDialog.UserResponse, RootDialog.BotResponse);
-            VisitorID=SQLManager.InsertVisitorData(UserData.UserID, VisitorData.ContactName, VisitorData.VisitorName, VisitorData.CompanyName, VisitorData.NeedParking, VisitorData.NoOfParkingTicket, VisitorData.BuildingName, VisitorData.StartDate, VisitorData.EndDate, VisitorData.Comment);
-            this.StartAsync(context);
+            
+            this.SendMail(context,result);
 
         }
-        //private async Task SendMail(IDialogContext context, IAwaitable<string> result)
-        //{
-
-        //    using (MailMessage mailmsg = new MailMessage("hitesh.garg@acuvate.com", "hitesh.garg@acuvate.com"))
-        //    {
-        //        mailmsg.Subject = "Visitor Badge request";
-        //        mailmsg.Body = "Your visitor badge request has been raised and the reference number is <ref.no>";
-        //        mailmsg.IsBodyHtml = false;
-        //        SmtpClient smtp = new SmtpClient();
-        //        smtp.Host = "smtp.office365.com";
-        //        smtp.EnableSsl = true;
-        //        NetworkCredential NetworkCred = new NetworkCredential("hitesh.garg@acuvate.com", "Intelligence@");
-        //        smtp.UseDefaultCredentials = true;
-        //        smtp.Credentials = NetworkCred;
-        //        smtp.Port = 587;
-        //        smtp.Send(mailmsg);
-        //    }
-        //}
+        private async Task SendMail(IDialogContext context, IAwaitable<object> result)
+        {
+            try
+            {
+                using (MailMessage mailmsg = new MailMessage("hitesh.garg@acuvate.com", "hitesh.garg@acuvate.com"))
+                {
+                    mailmsg.Subject = "Visitor Badge request";
+                    mailmsg.Body = $"Your visitor badge request has been raised and the reference number is {VisitorID}";
+                    mailmsg.IsBodyHtml = false;
+                    SmtpClient smtp = new SmtpClient();
+                    smtp.Host = "smtp.office365.com";
+                    smtp.EnableSsl = true;
+                    NetworkCredential NetworkCred = new NetworkCredential("hitesh.garg@acuvate.com", "Intelligence@");
+                    smtp.UseDefaultCredentials = true;
+                    smtp.Credentials = NetworkCred;
+                    smtp.Port = 587;
+                    smtp.Send(mailmsg);
+                }
+                this.StartAsync(context);
+            }
+            catch(Exception e)
+            {
+                SQLManager.StoreExceptionData(e.GetType().ToString(),e.Message,e.StackTrace,e.Data.ToString());
+            }
+        }
 
     }
 }
